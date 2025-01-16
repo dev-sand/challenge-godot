@@ -1,0 +1,20 @@
+[gd_scene load_steps=2 format=3 uid="uid://cqen5wgviednv"]
+
+[ext_resource type="Script" path="res://scripts/main.gd" id="1_b4kf6"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_b4kf6")
+
+[node name="ButtonAI" type="Button" parent="."]
+offset_left = 99.0
+offset_top = 195.0
+offset_right = 210.0
+offset_bottom = 247.0
+text = "Solo"
+
+[node name="ButtonTwoPlayer" type="Button" parent="."]
+offset_left = 434.0
+offset_top = 195.0
+offset_right = 545.0
+offset_bottom = 247.0
+text = "Two-Player"

@@ -1,0 +1,131 @@
+[gd_scene load_steps=12 format=3 uid="uid://d1h0b1y2ggjpv"]
+
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_dt5km"]
+[ext_resource type="Script" path="res://scripts/game_manager.gd" id="1_gqhx4"]
+[ext_resource type="PackedScene" uid="uid://dnp7pfrpd2k1o" path="res://scenes/paddle.tscn" id="1_r120n"]
+[ext_resource type="PackedScene" uid="uid://dh3xkc1wwi6bv" path="res://scenes/wall.tscn" id="2_5isdq"]
+[ext_resource type="PackedScene" uid="uid://brgcih65y54jw" path="res://scenes/ball.tscn" id="3_mvamp"]
+[ext_resource type="PackedScene" uid="uid://dgtbs6t4170kl" path="res://scenes/paddle_red.tscn" id="3_rb4c7"]
+[ext_resource type="PackedScene" uid="uid://c84n7jcfftnl8" path="res://scenes/scorezone.tscn" id="5_qwakm"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_tijxn"]
+
+[sub_resource type="WorldBoundaryShape2D" id="WorldBoundaryShape2D_k82r2"]
+normal = Vector2(0, 1)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_nsw54"]
+size = Vector2(250, 482)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_561f7"]
+size = Vector2(242, 486)
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_dt5km")
+
+[node name="GameManager" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("1_gqhx4")
+
+[node name="Score_Blue" type="Label" parent="GameManager"]
+visible = false
+offset_left = 129.0
+offset_top = 22.0
+offset_right = 245.0
+offset_bottom = 85.0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score_Red" type="Label" parent="GameManager"]
+visible = false
+offset_left = 405.0
+offset_top = 25.0
+offset_right = 521.0
+offset_bottom = 88.0
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Wall" type="Node" parent="."]
+
+[node name="Wall_Down" parent="Wall" instance=ExtResource("2_5isdq")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/Wall_Down"]
+position = Vector2(319, 479)
+shape = SubResource("WorldBoundaryShape2D_tijxn")
+
+[node name="Wall_Up" parent="Wall" instance=ExtResource("2_5isdq")]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Wall/Wall_Up"]
+position = Vector2(319, 0)
+shape = SubResource("WorldBoundaryShape2D_k82r2")
+
+[node name="scorezone" type="Node" parent="."]
+
+[node name="scorezone_red" parent="scorezone" instance=ExtResource("5_qwakm")]
+
+[node name="cs_scorezone_red" type="CollisionShape2D" parent="scorezone/scorezone_red"]
+position = Vector2(-125, 243)
+shape = SubResource("RectangleShape2D_nsw54")
+
+[node name="scorezone_blue" parent="scorezone" instance=ExtResource("5_qwakm")]
+position = Vector2(651, 10)
+
+[node name="cs_scorezone_blue" type="CollisionShape2D" parent="scorezone/scorezone_blue"]
+position = Vector2(110, 233)
+shape = SubResource("RectangleShape2D_561f7")
+
+[node name="Paddle" type="Node" parent="."]
+
+[node name="Paddle_Blue" parent="Paddle" instance=ExtResource("1_r120n")]
+visible = false
+position = Vector2(29, 239)
+
+[node name="Paddle_Red" parent="Paddle" instance=ExtResource("3_rb4c7")]
+visible = false
+position = Vector2(610, 239)
+
+[node name="Ball" parent="." instance=ExtResource("3_mvamp")]
+unique_name_in_owner = true
+visible = false
+position = Vector2(319, 239)
+
+[node name="ButtonAI" type="Button" parent="."]
+offset_left = 239.0
+offset_top = 240.0
+offset_right = 389.0
+offset_bottom = 300.0
+text = "SOLO"
+
+[node name="ButtonTwo" type="Button" parent="."]
+offset_left = 239.0
+offset_top = 309.0
+offset_right = 389.0
+offset_bottom = 369.0
+text = "TWO-PLAYER"
+
+[node name="ButtonRestart" type="Button" parent="."]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 239.0
+offset_top = 381.0
+offset_right = 389.0
+offset_bottom = 441.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "RESTART?"
+
+[connection signal="game_start_ai" from="." to="Paddle/Paddle_Red" method="_on_game_game_start_ai"]
+[connection signal="game_start_two" from="." to="Paddle/Paddle_Red" method="_on_game_game_start_two"]
+[connection signal="start" from="." to="GameManager" method="_on_game_start"]
+[connection signal="start" from="." to="Paddle/Paddle_Blue" method="_on_game_start"]
+[connection signal="start" from="." to="Ball" method="_on_game_start"]
+[connection signal="area_entered" from="scorezone/scorezone_red" to="Ball" method="_on_scorezone_red_area_entered"]
+[connection signal="area_entered" from="scorezone/scorezone_blue" to="Ball" method="_on_scorezone_blue_area_entered"]
+[connection signal="pressed" from="ButtonAI" to="." method="_on_button_ai_pressed"]
+[connection signal="pressed" from="ButtonTwo" to="." method="_on_button_two_pressed"]
+[connection signal="pressed" from="ButtonRestart" to="." method="_on_button_restart_pressed"]

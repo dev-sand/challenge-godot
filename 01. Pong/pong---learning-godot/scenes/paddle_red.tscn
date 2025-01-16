@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://dgtbs6t4170kl"]
+
+[ext_resource type="Script" path="res://scripts/paddle_red.gd" id="1_e1o45"]
+[ext_resource type="Texture2D" uid="uid://b0hc25h85xmxi" path="res://assets/paddle_red.png" id="1_lynns"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sbw8s"]
+size = Vector2(32, 124)
+
+[node name="Paddle_Red" type="CharacterBody2D"]
+script = ExtResource("1_e1o45")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_lynns")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_sbw8s")
+
+[node name="PaddleDirTimer" type="Timer" parent="."]
+
+[connection signal="timeout" from="PaddleDirTimer" to="." method="_on_paddle_dir_timer_timeout"]

@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://brgcih65y54jw"]
+
+[ext_resource type="Texture2D" uid="uid://0ly02qaeksj" path="res://assets/ball.png" id="1_4pgus"]
+[ext_resource type="Script" path="res://scripts/ball.gd" id="1_m7mtk"]
+[ext_resource type="AudioStream" uid="uid://ggb3s3jthe0y" path="res://audio/bounce.wav" id="3_fcwqa"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vce2b"]
+radius = 12.0
+
+[node name="Ball" type="Area2D"]
+script = ExtResource("1_m7mtk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_4pgus")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_vce2b")
+
+[node name="BallTimer" type="Timer" parent="."]
+
+[node name="BallBounce" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_fcwqa")
+volume_db = -15.0
+pitch_scale = 0.8
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="BallTimer" to="." method="_on_ball_timer_timeout"]
